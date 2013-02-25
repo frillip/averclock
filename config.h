@@ -3,8 +3,6 @@
 #define BRIGHTNESS_THRESH_LIGHT 600
 #define BRIGHTNESS_THRESH_DARK  700
 
-#define TOGGLE_COLON
-
 // 0->255 == bright->dim
 #define DISP_DIMMEST   120
 #define DISP_BRIGHTEST 5

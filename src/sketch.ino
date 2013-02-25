@@ -32,18 +32,19 @@ void setup () {
 	digitalWrite(LDR_PIN,HIGH);
 
 #ifndef DISPLAY_ADC
-	SCH_add_task(wallclock_inc_sec,1,20);
-	SCH_add_task(update_display,1,20);
-	SCH_add_task(remote_feedback,1,20*60);
+	SCH_add_task(wallclock_inc_sec, 1, 20);
+	SCH_add_task(update_display,    1, 20);
+	SCH_add_task(toggle_colon,      2, 20);
+	SCH_add_task(remote_feedback,   2, 20*60);
 #else
-	SCH_add_task(display_adc,2,100);
+	SCH_add_task(display_adc,       2, 100);
 #endif
 
 #ifdef AUTO_BRIGHTNESS
-	SCH_add_task(update_brightness,2,1);
+	SCH_add_task(update_brightness, 2, 1);
 #endif
 
-	SCH_add_task(remote_command,3,1);
+	SCH_add_task(remote_command,    3, 1);
 
 	SCH_start();
 }

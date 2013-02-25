@@ -3,6 +3,7 @@
 void init_display(void);
 void update_display (char);
 void update_brightness (void);
+void toggle_colon(void);
 
 void update_display () {
 	static char colon_state = 1;
@@ -10,13 +11,6 @@ void update_display () {
 	colon_state = ! colon_state;
 
 	digitalWrite(DISP_SS,0);
-
-#ifdef TOGGLE_COLON
-	// dots
-	SPI.transfer(0x77);
-	// colon or no colon
-	SPI.transfer(colon_state?1<<4:0);
-#endif
 
 	// hours (1-2 digit)
 	SPI.transfer(time.hours/10?:'x');
@@ -101,6 +95,22 @@ void display_adc() {
 	SPI.transfer(light/100 %10);
 	SPI.transfer(light/10  %10);
 	SPI.transfer(light/1   %10);
+
+	// deselect display
+	digitalWrite(DISP_SS,1);
+}
+
+void toggle_colon(void) {
+	static bool colon_state = 1;
+
+	colon_state = ! colon_state;
+
+	digitalWrite(DISP_SS,0);
+
+	// dots
+	SPI.transfer(0x77);
+	// colon or no colon
+	SPI.transfer(colon_state?1<<4:0);
 
 	// deselect display
 	digitalWrite(DISP_SS,1);
