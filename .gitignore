@@ -1,2 +1,10 @@
 current_time.h
 .build/
+*.mc*
+*.hex
+*.err
+*.sym
+*.cof
+*.lst
+*.tre
+*.pjt

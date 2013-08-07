@@ -1,60 +1,54 @@
-#include <SPI.h>
-
 void init_display(void);
 void update_display (char);
 void update_brightness (void);
 void toggle_colon(void);
 
-void update_display () {
-	static char colon_state = 1;
+#define DISP_BRIGHTEST 0x00
+boolean colon_state=FALSE;
 
-	colon_state = ! colon_state;
-
-	digitalWrite(DISP_SS,0);
-
+void update_display ()
+{
+	output_low(DISP_SS);
+	
 	// hours (1-2 digit)
-	SPI.transfer(time.hours/10?:'x');
-	SPI.transfer(time.hours%10);
+	spi_write(time.hours/10);
+	spi_write(time.hours%10);
 
 	// minutes
-	SPI.transfer(time.minutes/10);
-	SPI.transfer(time.minutes%10);
+	spi_write(time.minutes/10);
+	spi_write(time.minutes%10);
 
 	// deselect display
-	digitalWrite(DISP_SS,1);
+	output_high(DISP_SS);
 }
 
-void init_display(void) {
-	// init SPI
-
-	// slave select pin init
-	pinMode (DISP_SS, OUTPUT);
-	digitalWrite(DISP_SS,1);
-
-	// initialize SPI:
-	SPI.begin();
-	SPI.setClockDivider(SPI_CLOCK_DIV64);
-
+void init_display(void)
+{
+	// Set SS high
+	output_high(DISP_SS);
+	// SPI at 250kHz
+	setup_spi(SPI_MASTER|SPI_L_TO_H|SPI_XMIT_L_TO_H|SPI_CLK_DIV_64);
 	// wait for it to boot
-	delay(300);
+	delay_ms(300);
 
 	// reset, turn on colon
-	digitalWrite(DISP_SS,0);
+	output_low(DISP_SS);
 	// reset
-	SPI.transfer(0x76);
+	spi_write(0x76);
 	// dots
-	SPI.transfer(0x77);
+	spi_write(0x77);
 	// colon
-	SPI.transfer(0x10);
+	spi_write(0x10);
 	// max brightness
-	SPI.transfer(0x7A);
-	SPI.transfer(DISP_BRIGHTEST);
-	digitalWrite(DISP_SS,1);
+	spi_write(0x7A);
+	spi_write(DISP_BRIGHTEST);
+	output_high(DISP_SS);
 
 	// fill with initial time (force)
 	update_display();
 }
 
+/*
 void update_brightness() {
 	unsigned int light = 0;
 
@@ -67,23 +61,24 @@ void update_brightness() {
 	if ((light < BRIGHTNESS_THRESH_LIGHT) && !bright) {
 		digitalWrite(DISP_SS,0);
 		// max brightness
-		SPI.transfer(0x7A);
-		SPI.transfer(DISP_BRIGHTEST);
+		spi_write(0x7A);
+		spi_write(DISP_BRIGHTEST);
 		bright = 1;
 		digitalWrite(DISP_SS,1);
 	// room is dark
 	} else if ((light > BRIGHTNESS_THRESH_DARK) && bright) {
 		digitalWrite(DISP_SS,0);
 		// dim display
-		SPI.transfer(0x7A);
-		SPI.transfer(DISP_DIMMEST);
+		spi_write(0x7A);
+		spi_write(DISP_DIMMEST);
 		bright = 0;
 		// deselect display
 		digitalWrite(DISP_SS,1);
 	}
-
 }
+*/
 
+/*
 void display_adc() {
 	unsigned int light = 0;
 
@@ -91,27 +86,24 @@ void display_adc() {
 
 	digitalWrite(DISP_SS,0);
 
-	SPI.transfer(light/1000%10);
-	SPI.transfer(light/100 %10);
-	SPI.transfer(light/10  %10);
-	SPI.transfer(light/1   %10);
+	spi_write(light/1000%10);
+	spi_write(light/100 %10);
+	spi_write(light/10  %10);
+	spi_write(light/1   %10);
 
 	// deselect display
 	digitalWrite(DISP_SS,1);
 }
+*/
 
-void toggle_colon(void) {
-	static bool colon_state = 1;
-
+void toggle_colon(void)
+{
 	colon_state = ! colon_state;
-
-	digitalWrite(DISP_SS,0);
-
+	output_low(DISP_SS);
 	// dots
-	SPI.transfer(0x77);
+	spi_write(0x77);
 	// colon or no colon
-	SPI.transfer(colon_state?1<<4:0);
-
+	spi_write((uint8_t)colon_state<<4);
 	// deselect display
-	digitalWrite(DISP_SS,1);
+	output_high(DISP_SS);
 }
