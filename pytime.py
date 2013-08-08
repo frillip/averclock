@@ -22,9 +22,12 @@ ser.write('t')
 
 # set hours
 while True:
-	hours, mins = ser.readline().split(':')
+	time = ser.readline()
+	hours, mins = time.split(':')
 	hours = int(hours)
 	mins  = int(mins)
+
+	print time,
 
 	if hours > now.hour:
 		ser.write('H')
@@ -42,3 +45,6 @@ while True:
 
 	if hours == now.hour and mins == now.minute:
 		break
+
+
+print 'Done!'
