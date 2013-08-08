@@ -23,6 +23,8 @@ Connect a TTL bluetooth serial port to the UART, or just a cable. Commands:
 	M : decrement minute
 	h : increment hour
 	H : decrement hour
+	l : flash LED
+	p : print time
 
 Use putty or picocom after pairing. From an android phone you can map buttons
 to commands with the app 'Android bluetooth SPP'
