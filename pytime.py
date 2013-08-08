@@ -13,6 +13,8 @@ if len(sys.argv) == 1:
 
 dev = sys.argv[1]
 
+print 'Connecting...'
+
 ser = serial.Serial(dev, 9600)
 
 now = datetime.now()
