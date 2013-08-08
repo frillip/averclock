@@ -68,5 +68,6 @@ if hours == now.hour and mins == now.minute:
 	print 'Success!'
 else:
 	print 'Fail!'
+	sys.exit(1)
 
 
