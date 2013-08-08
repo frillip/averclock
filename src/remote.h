@@ -2,12 +2,13 @@ void remote_init(void);
 void remote_command(void);
 void remote_feedback(void);
 
+#INT_RDA
 void remote_command(void)
 {
 	static boolean led_status = 1;
 	char command = 0x00;
-	command = getc();
-	//fprintf(COM1, "%c",command);
+	command = fgetc(COM1);
+	fprintf(COM1, "%c",command);
 	switch (command) {
 		case 'm':
 			wallclock_inc_min();
@@ -29,15 +30,13 @@ void remote_command(void)
 			led_status = !led_status;
 			output_bit(PIN_A5,led_status);
 		break;
-
-		case 'p':
-			remote_feedback();
-		break;
 	}
+	remote_feedback();
 	update_display();
 }
 
-void remote_feedback(void) {
-	printf("%02u%02u",time.hours,time.minutes);
+void remote_feedback(void)
+{
+	fprintf(COM1,"\r\n%02u:%02u\r\n",time.hours,time.minutes);
 }
 

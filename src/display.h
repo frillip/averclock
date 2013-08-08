@@ -27,7 +27,7 @@ void init_display(void)
 	// Set SS high
 	output_high(DISP_SS);
 	// SPI at 250kHz
-	setup_spi(SPI_MASTER|SPI_L_TO_H|SPI_XMIT_L_TO_H|SPI_CLK_DIV_64);
+	setup_spi(SPI_MASTER|SPI_L_TO_H|SPI_XMIT_L_TO_H|SPI_CLK_T2);
 	// wait for it to boot
 	delay_ms(300);
 
@@ -107,3 +107,4 @@ void toggle_colon(void)
 	// deselect display
 	output_high(DISP_SS);
 }
+
