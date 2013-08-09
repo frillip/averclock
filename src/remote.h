@@ -28,7 +28,7 @@ void remote_command(void)
 
 		case 'l':
 			led_status = !led_status;
-			output_bit(PIN_A5,led_status);
+			output_bit(PIN_A1,led_status);
 		break;
 	}
 	remote_feedback();
