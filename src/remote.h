@@ -5,7 +5,7 @@ void remote_feedback(void);
 #INT_RDA
 void remote_command(void)
 {
-	static boolean led_status = 1;
+	static boolean led_status = 0;
 	char command = 0x00;
 	command = fgetc(COM1);
 	fprintf(COM1, "%c",command);
