@@ -1,5 +1,4 @@
 #include "18F2685.h"
-#device ADC=11
 #fuses NOWDT,NOPROTECT,NOLVP,INTRC_IO
 #use delay(clock=32000000)
 #use rs232(baud=115200,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8,ERRORS,stream=COM1)
@@ -17,6 +16,9 @@ char timestr[9]=__TIME__;
 void main(void)
 {
 	setup_oscillator(OSC_32MHZ);
+	setup_adc(ADC_CLOCK_DIV_8);
+	setup_adc_ports(AN0);
+	set_adc_channel(0);
 	setup_timer_1(T1_EXTERNAL | T1_CLK_OUT);	// Set up the timekeeping timer
 	setup_timer_2(T2_DIV_BY_1, 0x10, 1);		// Set up SPI clock timer
 	setup_timer_3(T3_INTERNAL | T3_DIV_BY_8);	// Set up scheduler timer
@@ -48,6 +50,7 @@ void main(void)
 		if(t100ms0==1)
 		{
 			t100ms0=0;
+			update_brightness();
 		}
 		if(t1s0==1)
 		{

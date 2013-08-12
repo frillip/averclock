@@ -4,7 +4,14 @@ void update_brightness (void);
 void toggle_colon(void);
 
 #define DISP_BRIGHTEST 0x00
+#define DISP_DIMMEST 0x40
+#define LDR_BRIGHTEST 60
+#define LDR_DIMMEST	50
+
+uint8_t disp_brightness=0x00;
 boolean colon_state=FALSE;
+uint8_t light=0;
+uint8_t last_light=0;
 
 void update_display ()
 {
@@ -48,53 +55,45 @@ void init_display(void)
 	update_display();
 }
 
-/*
 void update_brightness() {
-	unsigned int light = 0;
 
 	// is display bright?
-	static bool bright = 1;
+	//static boolean bright = 1;
 
-	light = analogRead(LDR_PIN);
-
-	// room is bright
-	if ((light < BRIGHTNESS_THRESH_LIGHT) && !bright) {
-		digitalWrite(DISP_SS,0);
+/*	// room is bright
+	if ((light > LDR_BRIGHTEST) && !bright) {
+		output_low(DISP_SS);
 		// max brightness
 		spi_write(0x7A);
 		spi_write(DISP_BRIGHTEST);
 		bright = 1;
-		digitalWrite(DISP_SS,1);
+		output_high(DISP_SS);
 	// room is dark
-	} else if ((light > BRIGHTNESS_THRESH_DARK) && bright) {
-		digitalWrite(DISP_SS,0);
+	} else if ((light < LDR_DIMMEST) && bright) {
+		output_low(DISP_SS);
 		// dim display
 		spi_write(0x7A);
 		spi_write(DISP_DIMMEST);
 		bright = 0;
 		// deselect display
-		digitalWrite(DISP_SS,1);
+		output_high(DISP_SS);
+	}
+*/
+
+	// fancy automagical scaling
+	last_light=light;
+	light = read_adc();
+	if(light!=last_light)
+	{
+		if(light>LDR_BRIGHTEST) light=LDR_BRIGHTEST;
+		if(light<LDR_DIMMEST) light=LDR_DIMMEST;
+		disp_brightness=(60-light)*2;
+		output_low(DISP_SS);
+		spi_write(0x7A);
+		spi_write(disp_brightness);
+		output_high(DISP_SS);
 	}
 }
-*/
-
-/*
-void display_adc() {
-	unsigned int light = 0;
-
-	light = analogRead(LDR_PIN);
-
-	digitalWrite(DISP_SS,0);
-
-	spi_write(light/1000%10);
-	spi_write(light/100 %10);
-	spi_write(light/10  %10);
-	spi_write(light/1   %10);
-
-	// deselect display
-	digitalWrite(DISP_SS,1);
-}
-*/
 
 void toggle_colon(void)
 {
