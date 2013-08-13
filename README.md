@@ -5,11 +5,12 @@ Just an exercise in timers. Oh, it's an CCS pic-compatable clock.
 
 Forked from @naggie/averclock
 
-Requires a [Sparkfun SPI serial display][1] with SS connected on PIN_B4 and
-a watch crystal on the Timer1 oscillator pins. The PIC itself is clocked at 32MHz
-using the internal oscillator.
+Requires a [Sparkfun SPI serial display][1] with SS connected on PIN_B5 and
+a watch crystal on the Timer1 oscillator pins. The PIC itself is clocked at 64MHz using
+an external 16MHz crystal and the 4x PLL.
 
-Time is automatically set from your computer's time when you compile the code.
+Time is automatically set from your computer's time when you compile the code and upload via PICKit,
+or preserved in EEPROM if programming using the bootloader.
 
 Connect an LDR on the low side of a potential divider (or an LED in reverse bias) to PIN_A0 for automatic
 brightness control.
