@@ -1,19 +1,22 @@
-//////// Standard Header file for the PIC18F2685 device ////////////////
-#device PIC18F2685
+//////// Standard Header file for the PIC18F26K80 device ////////////////
+#device PIC18F26K80
 #nolist
-//////// Program memory: 49152x16  Data RAM: 3328  Stack: 31
-//////// I/O: 25   Analog Pins: 11
+//////// Program memory: 32768x16  Data RAM: 3648  Stack: 31
+//////// I/O: 24   Analog Pins: 8
 //////// Data EEPROM: 1024
 //////// C Scratch area: 00   ID Location: 200000
-//////// Fuses: LP,XT,HS,RC,EC,EC_IO,H4,RC_IO,INTRC_IO,INTRC,NOFCMEN,FCMEN
-//////// Fuses: NOIESO,IESO,PUT,NOPUT,NOBROWNOUT,BROWNOUT_SW,BROWNOUT_NOSL
-//////// Fuses: BROWNOUT,BORV46,BORV43,BORV28,BORV21,NOWDT,WDT,WDT1,WDT2
-//////// Fuses: WDT4,WDT8,WDT16,WDT32,WDT64,WDT128,WDT256,WDT512,WDT1024
-//////// Fuses: WDT2048,WDT4096,WDT8192,WDT16384,WDT32768,NOPBADEN,PBADEN
-//////// Fuses: NOLPT1OSC,LPT1OSC,NOMCLR,MCLR,NOSTVREN,STVREN,NOLVP,LVP
-//////// Fuses: BBSIZ1K,BBSIZ2K,BBSIZ4K,NOXINST,XINST,DEBUG,NODEBUG,PROTECT
-//////// Fuses: NOPROTECT,CPB,NOCPB,CPD,NOCPD,WRT,NOWRT,WRTC,NOWRTC,WRTB
-//////// Fuses: NOWRTB,WRTD,NOWRTD,EBTR,NOEBTR,EBTRB,NOEBTRB
+//////// Fuses: VREGSLEEP_SW,VREGSLEEP,INTRC_LP,INTRC_HP,SOSC_LOW,SOSC_DIG
+//////// Fuses: SOSC_HIGH,NOXINST,XINST,LP,XT,HSH,HSM,ECH,ECH_IO,RC,RC_IO
+//////// Fuses: INTRC_IO,INTRC,ECM,ECM_IO,ECL,ECL_IO,NOPLLEN,PLLEN,NOFCMEN
+//////// Fuses: FCMEN,NOIESO,IESO,PUT,NOPUT,NOBROWNOUT,BROWNOUT_SW
+//////// Fuses: BROWNOUT_NOSL,BROWNOUT,BORV30,BORV27,BORV20,BORV18,BORM_LOW
+//////// Fuses: BORM_MED,BORM_HIGH,ZPBORM,NOWDT,WDT_NOSLEEP,WDT_SW,WDT,WDT1
+//////// Fuses: WDT2,WDT4,WDT8,WDT16,WDT32,WDT64,WDT128,WDT256,WDT512
+//////// Fuses: WDT1024,WDT2048,WDT4096,WDT8192,WDT16384,WDT32768,WDT65536
+//////// Fuses: WDT131072,WDT262144,WDT524288,WDT1048576,CANC,CANB,MSSPMSK5
+//////// Fuses: MSSPMSK7,NOMCLR,MCLR,NOSTVREN,STVREN,BBSIZ1K,BBSIZ2K,DEBUG
+//////// Fuses: NODEBUG,PROTECT,NOPROTECT,CPB,NOCPB,CPD,NOCPD,WRT,NOWRT,WRTC
+//////// Fuses: NOWRTC,WRTB,NOWRTB,WRTD,NOWRTD,EBTR,NOEBTR,EBTRB,NOEBTRB
 //////// 
 ////////////////////////////////////////////////////////////////// I/O
 // Discrete I/O Functions: SET_TRIS_x(), OUTPUT_x(), INPUT_x(),
@@ -26,7 +29,6 @@
 #define PIN_A1  31745
 #define PIN_A2  31746
 #define PIN_A3  31747
-#define PIN_A4  31748
 #define PIN_A5  31749
 #define PIN_A6  31750
 #define PIN_A7  31751
@@ -136,16 +138,25 @@
 // Constants used for SETUP_TIMER_1() are:
 //      (or (via |) together constants from each group)
 #define T1_DISABLED         0
-#define T1_INTERNAL         0x85
+#define T1_INTERNAL         0x07
 #define T1_EXTERNAL         0x87
 #define T1_EXTERNAL_SYNC    0x83
+#define T1_FOSC             0x47
 
-#define T1_CLK_OUT          8
+#define T1_ENABLE_SOSC		0x08
 
 #define T1_DIV_BY_1         0
 #define T1_DIV_BY_2         0x10
 #define T1_DIV_BY_4         0x20
 #define T1_DIV_BY_8         0x30
+
+#define T1_GATE           0x8000
+#define T1_GATE_INVERTED  0xC000
+#define T1_GATE_TOGGLE    0xA000
+#define T1_GATE_SINGLE    0x9000
+#define T1_GATE_TIMER2    0x8100
+#define T1_GATE_COMP1     0x8200
+#define T1_GATE_COMP2     0x8300
 
 ////////////////////////////////////////////////////////////////// Timer 2
 // Timer 2 Functions: SETUP_TIMER_2, GET_TIMER2, SET_TIMER2
@@ -160,14 +171,33 @@
 // Constants used for SETUP_TIMER_3() are:
 //      (or (via |) together constants from each group)
 #define T3_DISABLED         0
-#define T3_INTERNAL         0x85
+#define T3_INTERNAL         0x07
 #define T3_EXTERNAL         0x87
 #define T3_EXTERNAL_SYNC    0x83
+#define T3_FOSC             0x47
+
+#define T3_ENABLE_SOSC		0x08
 
 #define T3_DIV_BY_1         0
 #define T3_DIV_BY_2         0x10
 #define T3_DIV_BY_4         0x20
 #define T3_DIV_BY_8         0x30
+
+#define T3_GATE           0x8000
+#define T3_GATE_INVERTED  0xC000
+#define T3_GATE_TOGGLE    0xA000
+#define T3_GATE_SINGLE    0x9000
+#define T3_GATE_TIMER4    0x8100
+#define T3_GATE_COMP1     0x8200
+#define T3_GATE_COMP2     0x8300
+
+////////////////////////////////////////////////////////////////// Timer 4
+// Timer 4 Functions: SETUP_TIMER_4, GET_TIMER4, SET_TIMER4
+// Constants used for SETUP_TIMER_4() are:
+#define T4_DISABLED         0
+#define T4_DIV_BY_1         4
+#define T4_DIV_BY_4         5
+#define T4_DIV_BY_16        6
 
 ////////////////////////////////////////////////////////////////// CCP
 // CCP Functions: SETUP_CCPx, SET_PWMx_DUTY
@@ -191,10 +221,61 @@
 #word   CCP_1       =                   getenv("SFR:CCPR1L")
 #byte   CCP_1_LOW   =                   getenv("SFR:CCPR1L")
 #byte   CCP_1_HIGH  =                   getenv("SFR:CCPR1H")
-// OR in one of the following to use timer 3 with a CCP unit
-#define  T3_CCP1_TO_2  0x48
-#define  T3_CCP2       0x8
+// The following are used to select the Timer source for the CCP/ECCP
+// The first timer is the timer used when in CAPTURE or COMPARE mode
+// The second timer is the timer used when in PWM mode
+#define CCP_USE_TIMER1_AND_TIMER2       0x0000
+#define CCP_USE_TIMER3_AND_TIMER4       0x0100
 
+// The following should be used with the ECCP unit only (or these in)
+#define CCP_PWM_H_H                     0x0c
+#define CCP_PWM_H_L                     0x0d
+#define CCP_PWM_L_H                     0x0e
+#define CCP_PWM_L_L                     0x0f
+
+#define CCP_PWM_FULL_BRIDGE             0x40
+#define CCP_PWM_FULL_BRIDGE_REV         0xC0
+#define CCP_PWM_HALF_BRIDGE             0x80
+
+#define CCP_SHUTDOWN_ON_COMP1           0x100000
+#define CCP_SHUTDOWN_ON_COMP2           0x200000
+#define CCP_SHUTDOWN_ON_COMP            0x300000
+#define CCP_SHUTDOWN_ON_INT0            0x400000
+#define CCP_SHUTDOWN_ON_COMP1_INT0      0x500000
+#define CCP_SHUTDOWN_ON_COMP2_INT0      0x600000
+#define CCP_SHUTDOWN_ON_COMP_INT0       0x700000
+
+#define CCP_SHUTDOWN_AC_L               0x000000
+#define CCP_SHUTDOWN_AC_H               0x040000
+#define CCP_SHUTDOWN_AC_F               0x080000
+
+#define CCP_SHUTDOWN_BD_L               0x000000
+#define CCP_SHUTDOWN_BD_H               0x010000
+#define CCP_SHUTDOWN_BD_F               0x020000
+
+#define CCP_SHUTDOWN_RESTART            0x80000000  
+
+#define CCP_PULSE_STEERING_A            0x01000000
+#define CCP_PULSE_STEERING_B            0x02000000
+#define CCP_PULSE_STEERING_C            0x04000000
+#define CCP_PULSE_STEERING_D            0x08000000
+#define CCP_PULSE_STEERING_SYNC         0x10000000
+#define CCP_COMPLEMENTARY_AB            0x43000000  
+#define CCP_COMPLEMENTARY_AC            0x85000000  
+#define CCP_COMPLEMENTARY_AD            0xC9000000  
+
+#word   CCP_2       =                   getenv("SFR:CCPR2L")
+#byte   CCP_2_LOW   =                   getenv("SFR:CCPR2L")
+#byte   CCP_2_HIGH  =                   getenv("SFR:CCPR2H")
+#word   CCP_3       =                   getenv("SFR:CCPR3L")
+#byte   CCP_3_LOW   =                   getenv("SFR:CCPR3L")
+#byte   CCP_3_HIGH  =                   getenv("SFR:CCPR3H")
+#word   CCP_4       =                   getenv("SFR:CCPR4L")
+#byte   CCP_4_LOW   =                   getenv("SFR:CCPR4L")
+#byte   CCP_4_HIGH  =                   getenv("SFR:CCPR4H")
+#word   CCP_5       =                   getenv("SFR:CCPR5L")
+#byte   CCP_5_LOW   =                   getenv("SFR:CCPR5L")
+#byte   CCP_5_HIGH  =                   getenv("SFR:CCPR5H")
 ////////////////////////////////////////////////////////////////// SPI
 // SPI Functions: SETUP_SPI, SPI_WRITE, SPI_READ, SPI_DATA_IN
 // Constants used in SETUP_SPI() are:
@@ -229,14 +310,50 @@
 #define UART_AUTODETECT_NOWAIT 9
 #define UART_WAKEUP_ON_RDA     10
 #define UART_SEND_BREAK        13
+////////////////////////////////////////////////////////////////// COMP
+// Comparator Variables: C1OUT, C2OUT, C3OUT
+// Constants used in setup_comparator() are:
+//
+#define NC_NC_NC_NC     0x0404
+#define NC_NC           0x0404
+
+//Pick one constant for COMP1
+#define CP1_B1_B0       0x0080	
+#define CP1_A5_B0       0x0082  
+#define CP1_VBG_B0      0x0083  
+#define CP1_B1_VREF     0x0084  
+#define CP1_A5_VREF     0x0086	
+#define CP1_VBG_VREF    0x0087
+//Optionally OR with any of the following
+#define CP1_OUT_ON_B2   0x0040  
+#define CP1_INVERT      0x0020
+#define CP1_INT_L2H     0x0008
+#define CP1_INT_H2L     0x0010
+
+//Pick one constant for COMP2
+#define CP2_A5_B4       0x8000  
+#define CP2_B1_B4       0x8200  
+#define CP2_VBG_B4      0x8300  
+#define CP2_A5_VREF     0x8400  
+#define CP2_B1_VREF     0x8600  
+#define CP2_VBG_VREF    0x8700
+//Optionally OR with any of the following
+#define CP2_OUT_ON_B3   0x4000  
+#define CP2_INVERT      0x2000
+#define CP2_INT_L2H     0x0800
+#define CP2_INT_H2L     0x1000
+
+#bit C1OUT = 0xFB4.6
+#bit C2OUT = 0xFB4.7
+
 ////////////////////////////////////////////////////////////////// VREF
 // Constants used in setup_vref() are:
 //
-#define VREF_LOW  0xa0
-#define VREF_HIGH 0x80
-// Or (with |) the above with a number 0-15
-#define VREF_F5   0x40
-#define VREF_COMP 0x10
+#define VREF_OFF     0
+#define VREF_ON      0x80
+#define VREF_EXT     0x20  // Range for ref gen VREF- to VREF+
+#define VREF_OUT_A0  0x40
+// OR (with |) the above with a number 0-31
 
 ////////////////////////////////////////////////////////////////// VREF
 // Constants used in setup_low_volt_detect() are:
@@ -264,31 +381,31 @@
 
 ////////////////////////////////////////////////////////////////// INTERNAL RC
 // Constants used in setup_oscillator() are:
-// First param:
-#define OSC_31KHZ   0
-#define OSC_125KHZ  0x10
-#define OSC_250KHZ  0x20
-#define OSC_500KHZ  0x30
-#define OSC_1MHZ    0x40
-#define OSC_2MHZ    0x50
-#define OSC_4MHZ    0x60
-#define OSC_8MHZ    0x70
-#define OSC_16MHZ   0x4060
-#define OSC_32MHZ   0x4070
+#define OSC_31250      0x8000
+#define OSC_PLL_ON     0x4000
+#define OSC_PLL_OFF    0
+#define OSC_31KHZ      0
+#define OSC_250KHZ     0x10
+#define OSC_500KHZ     0x20
+#define OSC_1MHZ       0x30
+#define OSC_2MHZ       0x40
+#define OSC_4MHZ       0x50
+#define OSC_8MHZ       0x60
+#define OSC_16MHZ      0x70
 // The following may be OR'ed in with the above using |
-#define OSC_TIMER1  1
-#define OSC_INTRC   2
-#define OSC_NORMAL  0
+#define OSC_SOSC       1
+#define OSC_INTRC      2
+#define OSC_NORMAL     0
 // The following may be OR'ed in with the above using |
 #define OSC_IDLE_MODE  0x80
-#define OSC_31250   0x8000
-#define OSC_PLL_ON  0x4000
-#define OSC_PLL_OFF 0
+// The following may be OR'ed in with the above using |
+#define OSC_MFINTRC_ON 0x10000  //MF-INTOSC used instead of HF-INTOSC for 500KHZ, 250KHZ and 31KHZ operating frequencies.
+#define OSC_SOSC_ON    0x80000
 // A second optional parameter may be used with this part to fine
-// tune the speed (signed int,0-31)
+// tune the speed (signed int,-32 to 31)
 // Result may be (ignore all other bits)
 #define OSC_STATE_STABLE 4
-#define OSC_STATE_EXT_RUNNING 8
+#define OSC_STATE_PRIMARY_RUNNING 8
 
 
 ////////////////////////////////////////////////////////////////// ADC
@@ -315,34 +432,27 @@
 
 // Constants used in SETUP_ADC_PORTS() are:
 // First argument:
-#define NO_ANALOGS   0x0F   // None
-#define ALL_ANALOG   0x00   // A0 A1 A2 A3 A5 E0 E1 E2 B1 B4 B0            
-#define AN0_TO_AN9   0x05   // A0 A1 A2 A3 A5 E0 E1 E2 B1 B4               
-#define AN0_TO_AN8   0x06   // A0 A1 A2 A3 A5 E0 E1 E2 B1                  
-#define AN0_TO_AN7   0x07   // A0 A1 A2 A3 A5 E0 E1 E2                     
-#define AN0_TO_AN6   0x08   // A0 A1 A2 A3 A5 E0 E1                        
-#define AN0_TO_AN5   0x09   // A0 A1 A2 A3 A5 E0                           
-#define AN0_TO_AN4   0x0A   // A0 A1 A2 A3 A5
-#define AN0_TO_AN3   0x0B   // A0 A1 A2 A3
-#define AN0_TO_AN2   0x0C   // A0 A1 A2
-#define AN0_TO_AN1   0x0D   // A0 A1
-#define AN0          0x0E   // A0
-#define AN0_TO_AN12_ANALOG     0x02   //!old only provided for compatibility    
-#define AN0_TO_AN11_ANALOG     0x03   //!old only provided for compatibility
-#define AN0_TO_AN10_ANALOG     0x04   //!old only provided for compatibility
-#define AN0_TO_AN9_ANALOG      0x05   //!old only provided for compatibility
-#define AN0_TO_AN8_ANALOG      0x06   //!old only provided for compatibility
-#define AN0_TO_AN4_ANALOG      0x0A   //!old only provided for compatibility
-#define AN0_TO_AN3_ANALOG      0x0B   //!old only provided for compatibility
-#define AN0_TO_AN2_ANALOG      0x0C   //!old only provided for compatibility
-#define AN0_TO_AN1_ANALOG      0x0D   //!old only provided for compatibility
-#define AN0_ANALOG             0x0E   //!old only provided for compatibility
+// OR together desired pins
+#define sAN0            0x000100    //| A0
+#define sAN1            0x000200    //| A1
+#define sAN2            0x000400    //| A2
+#define sAN3            0x000800    //| A3
+#define sAN4            0x001000    //| A5
+#define sAN8            0x010000    //| B1
+#define sAN9            0x020000    //| B4
+#define sAN10           0x040000    //| B0
+#define NO_ANALOGS             0    // None
+#define ALL_ANALOG      0x071F00    // A0 A1 A2 A3 A5 B1 B4 B0 
 
 // Optional Second argument:
-#define VSS_VDD               0x00              // Range 0-Vdd
-#define VREF_VREF             0x30              // Range VrefL-VrefH
-#define VREF_VDD              0x20              // Range VrefL-Vdd
-#define VSS_VREF              0x10              // Range 0-VrefH
+#define VSS_VDD             0x00    //| Range 0-Vdd
+#define VSS_VREF            0x10    //| Range 0-VrefH
+#define VSS_2V048           0x20    //| Range 0-2.048V
+#define VSS_4V096           0x30    //| Range 0-3.096V
+#define VREF_VDD            0x08    //| Range VrefL-Vdd
+#define VREF_VREF           0x18    //| Range VrefL-VrefH
+#define VREF_2V048          0x28    //| Range VrefL-2.048V
+#define VREF_4V096          0x38    //| Range VrefL-4.096V
 
 // Constants used in READ_ADC() are:
 #define ADC_START_AND_READ     7   // This is the default if nothing is specified
@@ -374,23 +484,42 @@
 #define INT_EXT2_L2H              0x5002F010
 #define INT_EXT2_H2L              0x6002F010
 #define INT_EXT2                  0x00F010
-#define INT_RB                    0x00FFF208
+#define INT_RB                    0x01FFF208
 #define INT_AD                    0x009D40
 #define INT_RDA                   0x009D20
 #define INT_TBE                   0x009D10
 #define INT_SSP                   0x009D08
-#define INT_CCP1                  0x009D04
 #define INT_BUSCOL                0x00A008
-#define INT_LOWVOLT               0x00A004
-#define INT_CANIRX                0x00A380
-#define INT_CANWAKE               0x00A340
-#define INT_CANERR                0x00A320
-#define INT_EEPROM                0x00A010
-#define INT_CANTX2                0x00A310
-#define INT_CANTX1                0x00A308
-#define INT_CANTX0                0x00A304
-#define INT_CANRX1                0x00A302
-#define INT_CANRX0                0x00A301
+#define INT_RDA2                  0x00A320
+#define INT_TBE2                  0x00A310
 #define INT_OSCF                  0x00A080
+#define INT_HLVD                  0x00A004
+#define INT_EXT3_L2H              0x5003F020
+#define INT_EXT3_H2L              0x6003F020
+#define INT_EXT3                  0x00F020
+#define INT_CCP1                  0x00A302
+#define INT_CCP2                  0x00A304
+#define INT_CTMU                  0x00A308
+#define INT_TMR1G                 0x009D04
+#define INT_TMR3G                 0x00A001
+#define INT_CCP3                  0x00B601
+#define INT_CCP4                  0x00B602
+#define INT_CCP5                  0x00B604
+#define INT_COMP1                 0x00B610
+#define INT_COMP2                 0x00B620
+#define INT_EEPROM                0x00B640
+#define INT_TIMER4                0x00B680
+#define INT_CANRX0                0x007601
+#define INT_CANRX1                0x007602
+#define INT_CANTX0                0x007604
+#define INT_CANTX1                0x007608
+#define INT_CANTX2                0x007610
+#define INT_CANERR                0x007620
+#define INT_CANWAKE               0x007640
+#define INT_CANIRX                0x007680
+#define INT_RB4                   0x010F208
+#define INT_RB5                   0x020F208
+#define INT_RB6                   0x040F208
+#define INT_RB7                   0x080F208
 
 #list

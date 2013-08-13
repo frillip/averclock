@@ -1,3 +1,8 @@
+#define EEPROM_RESET	0x00
+#define EEPROM_HOURS	0x01
+#define EEPROM_MINUTES	0x02
+#define EEPROM_SECONDS	0x03
+
 void wallclock_inc_sec (void);
 void wallclock_dec_sec (void);
 void wallclock_inc_min (void);

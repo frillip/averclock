@@ -2,10 +2,11 @@ void remote_init(void);
 void remote_command(void);
 void remote_feedback(void);
 
+boolean led_status = 0;
+
 #INT_RDA
 void remote_command(void)
 {
-	static boolean led_status = 0;
 	char command = 0x00;
 	command = fgetc(COM1);
 	fprintf(COM1, "%c",command);
@@ -30,6 +31,14 @@ void remote_command(void)
 			led_status = !led_status;
 			output_bit(PIN_A1,led_status);
 		break;
+
+		case 'R':
+			write_eeprom(EEPROM_RESET,0x42);			// Write reset flag
+			write_eeprom(EEPROM_HOURS,time.hours);
+			write_eeprom(EEPROM_MINUTES,time.minutes);
+			write_eeprom(EEPROM_SECONDS,time.seconds);	// Write current time to EEPROM
+			reset_cpu();
+		break;
 	}
 	remote_feedback();
 	update_display();
@@ -37,6 +46,6 @@ void remote_command(void)
 
 void remote_feedback(void)
 {
-	fprintf(COM1,"\r\n%02u:%02u\r\n",time.hours,time.minutes);
+	fprintf(COM1,"\r\n%02u:%02u:%02u - %u\r\n",time.hours,time.minutes,time.seconds,light);
 }
 

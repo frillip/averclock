@@ -57,29 +57,6 @@ void init_display(void)
 
 void update_brightness() {
 
-	// is display bright?
-	//static boolean bright = 1;
-
-/*	// room is bright
-	if ((light > LDR_BRIGHTEST) && !bright) {
-		output_low(DISP_SS);
-		// max brightness
-		spi_write(0x7A);
-		spi_write(DISP_BRIGHTEST);
-		bright = 1;
-		output_high(DISP_SS);
-	// room is dark
-	} else if ((light < LDR_DIMMEST) && bright) {
-		output_low(DISP_SS);
-		// dim display
-		spi_write(0x7A);
-		spi_write(DISP_DIMMEST);
-		bright = 0;
-		// deselect display
-		output_high(DISP_SS);
-	}
-*/
-
 	// fancy automagical scaling
 	last_light=light;
 	light = read_adc();

@@ -15,7 +15,7 @@ void timekeeping(void)
 #INT_TIMER3
 void scheduler(void)
 {
-	set_timer3(-10000);
+	set_timer3(-20000);
 	t10ms++;
 	t10ms0++;
 	if(t10ms==10)
