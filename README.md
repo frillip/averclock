@@ -6,12 +6,12 @@ Just an exercise in timers. Oh, it's an CCS pic-compatable clock.
 Forked from @naggie/averclock
 
 Requires a [Sparkfun SPI serial display][1] with SS connected on PIN_B4 and
-a watch crystal on the Timer1 oscillator pins. The PIC itself is clocked at 16MHz
+a watch crystal on the Timer1 oscillator pins. The PIC itself is clocked at 32MHz
 using the internal oscillator.
 
 Time is automatically set from your computer's time when you compile the code.
 
-Connect an LDR on the high side of a potential divider to PIN_A0 for automatic
+Connect an LDR on the low side of a potential divider (or an LED in reverse bias) to PIN_A0 for automatic
 brightness control.
 
 Bluetooth control
@@ -24,7 +24,7 @@ Connect a TTL bluetooth serial port to the UART, or just a cable. Commands:
 	h : increment hour
 	H : decrement hour
 	l : flash LED
-	p : print time
+	any other character : print time
 
 Use putty or picocom after pairing. From an android phone you can map buttons
 to commands with the app 'Android bluetooth SPP'
