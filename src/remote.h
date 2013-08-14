@@ -32,6 +32,11 @@ void remote_command(void)
 			output_bit(PIN_A1,led_status);
 		break;
 
+		case 'b':
+			alarm = TRUE;
+			manual_alarm=TRUE;
+		break;
+
 		case 'R':
 			write_eeprom(EEPROM_RESET,0x42);			// Write reset flag
 			write_eeprom(EEPROM_HOURS,time.hours);

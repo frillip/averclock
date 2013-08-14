@@ -2,6 +2,7 @@ uint8_t t10ms=0;
 uint8_t t10ms0=0;
 uint8_t t100ms=0;
 uint8_t t100ms0=0;
+uint8_t t100ms1=0;
 uint8_t t1s0=0;
 
 #INT_TIMER1
@@ -23,6 +24,7 @@ void scheduler(void)
 		t10ms=0;
 		t100ms++;
 		t100ms0++;
+		t100ms1++;
 		if(t100ms==10)
 		{
 			t100ms=0;

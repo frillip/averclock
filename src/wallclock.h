@@ -2,6 +2,8 @@
 #define EEPROM_HOURS	0x01
 #define EEPROM_MINUTES	0x02
 #define EEPROM_SECONDS	0x03
+#define ALARM_PIN		PIN_C2
+#define ALARM_DURATION	3
 
 void wallclock_inc_sec (void);
 void wallclock_dec_sec (void);
@@ -9,6 +11,7 @@ void wallclock_inc_min (void);
 void wallclock_dec_min (void);
 void wallclock_inc_hour (void);
 void wallclock_dec_hour (void);
+void wallclock_alarm(void);
 
 typedef struct {
 	uint8_t hours;
@@ -17,6 +20,9 @@ typedef struct {
 } elapsed;
 
 elapsed time = {0,0,0};
+
+boolean alarm = FALSE;
+boolean manual_alarm = FALSE;
 
 // call at 1Hz
 void wallclock_inc_sec (void)
@@ -67,4 +73,29 @@ void wallclock_dec_hour (void)
 	time.hours--;
 	if (time.hours ==255)
 		time.hours = 23;
+}
+
+void wallclock_alarm(void)
+{
+	if((time.seconds<ALARM_DURATION)&&(manual_alarm==FALSE))
+	{
+		if((time.hours==9)&&(time.minutes==40))
+		{
+			alarm = TRUE;
+		}
+		else if((time.hours==12)&&(time.minutes==45))
+		{
+			alarm = TRUE;
+		}
+		else if((time.hours==15)&&(time.minutes==0))
+		{
+			alarm = TRUE;
+		}
+		else if((time.hours==17)&&(time.minutes==0))
+		{
+			alarm = TRUE;
+		}
+		else alarm = FALSE;
+	}
+	else alarm = FALSE;
 }
