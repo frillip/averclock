@@ -23,6 +23,7 @@ elapsed time = {0,0,0};
 
 boolean alarm = FALSE;
 boolean manual_alarm = FALSE;
+uint8_t alarm_count = 0;
 
 // call at 1Hz
 void wallclock_inc_sec (void)
@@ -77,21 +78,18 @@ void wallclock_dec_hour (void)
 
 void wallclock_alarm(void)
 {
-	if((time.seconds<ALARM_DURATION)&&(manual_alarm==FALSE))
+	alarm=0;
+	if(time.seconds<ALARM_DURATION)
 	{
-		if((time.hours==9)&&(time.minutes==40))
+		if((time.hours==9)&&(time.minutes==20))
 		{
 			alarm = TRUE;
 		}
-		else if((time.hours==12)&&(time.minutes==45))
+		else if((time.hours==12)&&(time.minutes==40))
 		{
 			alarm = TRUE;
 		}
-		else if((time.hours==15)&&(time.minutes==0))
-		{
-			alarm = TRUE;
-		}
-		else if((time.hours==17)&&(time.minutes==0))
+		else if((time.hours==16)&&(time.minutes==50))
 		{
 			alarm = TRUE;
 		}

@@ -33,8 +33,9 @@ void remote_command(void)
 		break;
 
 		case 'b':
-			alarm = TRUE;
+			alarm=TRUE;
 			manual_alarm=TRUE;
+			alarm_count=0;
 		break;
 
 		case 'R':

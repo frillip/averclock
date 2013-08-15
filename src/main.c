@@ -62,23 +62,29 @@ void main(void)
 		{
 			t100ms0=0;
 			update_brightness();
+			if((alarm)&&(alarm_count<5))
+			{
+				fprintf(COM1, "%u", alarm_count);
+				if(alarm_count==0) output_high(ALARM_PIN);
+				alarm_count++;	
+			}
+			else
+			{
+				output_low(ALARM_PIN);
+				alarm=FALSE;
+				alarm_count=0;
+			}
 		}
 		if(t100ms1==5)
 		{
 			t100ms1=0;
-			if(alarm)
-			{
-				manual_alarm=FALSE;
-				output_toggle(ALARM_PIN);
-			}
-			else output_low(ALARM_PIN);
 		}
 		if(t1s0==1)
 		{
 			t1s0=0;
 			toggle_colon();
 			update_display();
-			wallclock_alarm();
+			if(manual_alarm==FALSE) wallclock_alarm();
 		}
 	}
 }
