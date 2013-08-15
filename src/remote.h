@@ -9,7 +9,7 @@ void remote_command(void)
 {
 	char command = 0x00;
 	command = fgetc(COM1);
-	fprintf(COM1, "%c",command);
+	if(command!='R') fprintf(COM1, "%c",command);
 	switch (command) {
 		case 'm':
 			wallclock_inc_min();

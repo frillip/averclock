@@ -10,3 +10,4 @@ current_time.h
 *.pjt
 *.o
 *.map
+*.bin
