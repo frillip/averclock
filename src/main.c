@@ -64,7 +64,6 @@ void main(void)
 			update_brightness();
 			if((alarm)&&(alarm_count<5))
 			{
-				fprintf(COM1, "%u", alarm_count);
 				if(alarm_count==0) output_high(ALARM_PIN);
 				alarm_count++;	
 			}

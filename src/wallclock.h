@@ -89,6 +89,10 @@ void wallclock_alarm(void)
 		{
 			alarm = TRUE;
 		}
+		else if((time.hours==15)&&(time.minutes==55))
+		{
+			alarm = TRUE;
+		}
 		else if((time.hours==16)&&(time.minutes==50))
 		{
 			alarm = TRUE;
