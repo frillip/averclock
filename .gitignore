@@ -11,3 +11,5 @@ current_time.h
 *.o
 *.map
 *.bin
+*.esym
+*.sta
