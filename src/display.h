@@ -16,7 +16,8 @@ uint8_t last_light=0;
 void update_display ()
 {
 	output_low(DISP_SS);
-	
+	#asm nop #endasm
+
 	// hours (1-2 digit)
 	spi_write(time.hours/10);
 	spi_write(time.hours%10);
@@ -26,6 +27,7 @@ void update_display ()
 	spi_write(time.minutes%10);
 
 	// deselect display
+	#asm nop #endasm
 	output_high(DISP_SS);
 }
 
@@ -40,6 +42,7 @@ void init_display(void)
 
 	// reset, turn on colon
 	output_low(DISP_SS);
+	#asm nop #endasm
 	// reset
 	spi_write(0x76);
 	// dots
@@ -49,6 +52,7 @@ void init_display(void)
 	// max brightness
 	spi_write(0x7A);
 	spi_write(DISP_BRIGHTEST);
+	#asm nop #endasm
 	output_high(DISP_SS);
 
 	// fill with initial time (force)
@@ -66,8 +70,10 @@ void update_brightness() {
 		if(light<LDR_DIMMEST) light=LDR_DIMMEST;
 		disp_brightness=(60-light)*2;
 		output_low(DISP_SS);
+		#asm nop #endasm
 		spi_write(0x7A);
 		spi_write(disp_brightness);
+		#asm nop #endasm
 		output_high(DISP_SS);
 	}
 }
@@ -76,11 +82,13 @@ void toggle_colon(void)
 {
 	colon_state = ! colon_state;
 	output_low(DISP_SS);
+	#asm nop #endasm
 	// dots
 	spi_write(0x77);
 	// colon or no colon
 	spi_write((uint8_t)colon_state<<4);
 	// deselect display
+	#asm nop #endasm
 	output_high(DISP_SS);
 }
 

@@ -20,7 +20,7 @@ void main(void)
 	setup_adc_ports(sAN0);
 	set_adc_channel(0);
 	setup_timer_1(T1_EXTERNAL | T1_ENABLE_SOSC);	// Set up the timekeeping timer
-	setup_timer_2(T2_DIV_BY_1, 0x20, 1);		// Set up SPI clock timer
+	setup_timer_2(T2_DIV_BY_1, 0x28, 1);		// Set up SPI clock timer
 	setup_timer_3(T3_INTERNAL | T3_DIV_BY_8);	// Set up scheduler timer
 	enable_interrupts(INT_RDA);					// Enable serial interrupt
 	enable_interrupts(INT_TIMER1);				// Enable timekeeping timer interrupt
