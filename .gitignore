@@ -13,3 +13,4 @@ current_time.h
 *.bin
 *.esym
 *.sta
+*.exe

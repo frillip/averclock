@@ -275,19 +275,19 @@ IdTypePIC = 0x4F
 IdTypePIC = 0x4F
 		#define max_flash 0x10000
 	ENDIF
-	IFDEF __18F46K80
-		#include "p18f46k80.inc"
-IdTypePIC = 0x4F
-		#define max_flash 0x10000
-	ENDIF
-IFDEF __18F26K80
-		#include "p18f26k80.inc"
-IdTypePIC = 0x4F
-		#define max_flash 0x10000
-	ENDIF
 	IFDEF __18F4680
 		#include "p18f4680.inc"
 IdTypePIC = 0x4F
+		#define max_flash 0x10000
+	ENDIF
+	IFDEF __18F46K80
+		#include "p18f46k80.inc"
+IdTypePIC = 0x50
+		#define max_flash 0x10000
+	ENDIF
+	IFDEF __18F26K80
+		#include "p18f26k80.inc"
+IdTypePIC = 0x50
 		#define max_flash 0x10000
 	ENDIF
 
@@ -331,4 +331,5 @@ IdTypePIC = 0x57
 	
 		if IdTypePIC==0
 		error "Pic not yet implemeted"
-	endif
+    endif
+
