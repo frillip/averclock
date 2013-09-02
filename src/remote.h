@@ -37,7 +37,7 @@ uint8_t strncmp(unsigned char *s1, unsigned char *s2, uint8_t n)
 void remote_command(void)
 {
 	command[offset]=fgetc(COM1);
-	if((command[offset]==0xff)||(command[offset]=='`'))
+	if(command[offset]==0xff)
 	{
 		delay_ms(10);
 		reset_cpu();
