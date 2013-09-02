@@ -1,4 +1,5 @@
 #include "18F26K80.h"
+#device PASS_STRINGS = IN_RAM
 #fuses NOWDT,NOPROTECT,SOSC_LOW,HSH,PLLEN
 #use delay(clock=64000000,crystal=16000000)
 #use rs232(baud=115200,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8,ERRORS,stream=COM1)	// TTL serial for bluetooth etc
@@ -57,6 +58,7 @@ void main(void)
 		if(t10ms0==1)
 		{
 			t10ms0=0;
+			if(command_waiting) process_command();
 		}
 		if(t100ms0==1)
 		{
