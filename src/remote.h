@@ -9,54 +9,6 @@ boolean command_waiting=FALSE;
 boolean command_complete=FALSE;
 boolean led_status = 0;
 
-/*
-#INT_RDA
-void remote_command(void)
-{
-	char command = 0x00;
-	command = fgetc(COM1);
-	if(command!='R') fprintf(COM1, "%c",command);
-	switch (command) {
-		case 'm':
-			wallclock_inc_min();
-		break;
-
-		case 'M':
-			wallclock_dec_min();
-		break;
-
-		case 'h':
-			wallclock_inc_hour();
-		break;
-
-		case 'H':
-			wallclock_dec_hour();
-		break;
-
-		case 'l':
-			led_status = !led_status;
-			output_bit(PIN_A1,led_status);
-		break;
-
-		case 'b':
-			alarm=TRUE;
-			manual_alarm=TRUE;
-			alarm_count=0;
-		break;
-
-		case 'R':
-			write_eeprom(EEPROM_RESET,0x42);			// Write reset flag
-			write_eeprom(EEPROM_HOURS,time.hours);
-			write_eeprom(EEPROM_MINUTES,time.minutes);
-			write_eeprom(EEPROM_SECONDS,time.seconds);	// Write current time to EEPROM
-			reset_cpu();
-		break;
-	}
-	remote_feedback();
-	update_display();
-}
-*/
-
 void remote_feedback(void)
 {
 	fprintf(COM1,"\r\n%02u:%02u:%02u\r\n",time.hours,time.minutes,time.seconds);
@@ -66,18 +18,18 @@ uint8_t strcmp(unsigned char *s1, unsigned char *s2)
 {
    for (; *s1 == *s2; s1++, s2++)
       if (*s1 == '\0')
-         return(0);
-   return((*s1 < *s2) ? -1: 1);
+         return(1);
+   return(0);
 }
 
 uint8_t strncmp(unsigned char *s1, unsigned char *s2, uint8_t n)
 {
    for (; n > 0; s1++, s2++, n--)
       if (*s1 != *s2)
-         return((*s1 <*s2) ? -1: 1);
-      else if (*s1 == '\0')
          return(0);
-   return(0);
+      else if (*s1 == '\0')
+         return(1);
+   return(1);
 }
 
 
@@ -85,47 +37,50 @@ uint8_t strncmp(unsigned char *s1, unsigned char *s2, uint8_t n)
 void remote_command(void)
 {
 	command[offset]=fgetc(COM1);
-	if(command[offset]==0xff)
+	if((command[offset]==0xff)||(command[offset]=='`'))
 	{
 		delay_ms(10);
 		reset_cpu();
 	}
 	fprintf(COM1,"%c", command[offset]);
 	if(command[offset]==0xd) fprintf(COM1,"\n");
-	if(command_incoming==FALSE)
+	if(command_incoming)
 	{
-		if(command[0]=='A')
-		{
-			if((offset)&&(command[1]=='T'))
-			{
-				if ((offset==2)&&(command[2]=='+'))
-				{
-					command_incoming=TRUE;
-				}
-				else offset=0;
-				offset++;
-			}
-			else offset=0;
-			offset++;
-		}
-		else offset=0;
-	}
-	else
-	{
-		if(((command[offset]==0x00)||(command[offset]==0x0d))&&(command_incoming))
+		command_buffer[offset-3]=command[offset];
+		if((command[offset]==0x00)||(command[offset]==0x0d))
 		{
 			command_incoming=FALSE;
 			command_waiting=TRUE;
 			command[offset]=0x00;
+			command_buffer[offset-3]=command[offset];
+			memset(command, 0, sizeof(command));
+			offset=0;
+			return;
 		}
-		command_buffer[offset-3]=command[offset];
 		offset++;
 		if(offset==16)
 		{
 			command_incoming=FALSE;
 			offset=0;
-			fprintf(COM1, "\r\n");
+			fprintf(COM1, "Overflow!\r\n");
 		}
+	}
+	else
+	{
+		if((offset==0)&&(command[0]=='A'))
+		{
+			offset++;
+		}
+		else if((offset==1)&&(command[1]=='T'))
+		{
+			offset++;
+		}
+		else if ((offset==2)&&(command[2]=='+'))
+		{
+			command_incoming=TRUE;
+			offset++;
+		}
+		else offset=0;
 	}
 }
 

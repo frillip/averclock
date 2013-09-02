@@ -42,7 +42,8 @@ void main(void)
 		time.minutes=(((uint8_t)timestr[3]-48)*10)+((uint8_t)timestr[4]-48);
 		time.hours=(((uint8_t)timestr[0]-48)*10)+((uint8_t)timestr[1]-48);		// Parse timestr to time struct
 	}
-
+	memset(command_buffer, 0, sizeof(command_buffer));
+	memset(command, 0, sizeof(command));
 	init_display();
 
 	fprintf(COM1, "HELLO!\r\n");	// Say hello!
