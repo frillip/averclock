@@ -38,7 +38,7 @@ void init_display(void)
 	// SPI at 250kHz
 	setup_spi(SPI_MASTER|SPI_L_TO_H|SPI_XMIT_L_TO_H|SPI_CLK_T2);
 	// wait for it to boot
-	delay_ms(300);
+	delay_ms(100);
 
 	// reset, turn on colon
 	output_low(DISP_SS);

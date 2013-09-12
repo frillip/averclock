@@ -61,6 +61,8 @@ void remote_command(void)
 		if(offset==16)
 		{
 			command_incoming=FALSE;
+			memset(command, 0, sizeof(command_buffer));
+			memset(command, 0, sizeof(command));
 			offset=0;
 			fprintf(COM1, "Overflow!\r\n");
 		}

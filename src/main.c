@@ -1,9 +1,9 @@
 #include "18F26K80.h"
 #device PASS_STRINGS = IN_RAM
-#fuses NOWDT,NOPROTECT,SOSC_LOW,HSH,PLLEN
-#use delay(clock=64000000,crystal=16000000)
-#use rs232(baud=115200,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8,ERRORS,stream=COM1)	// TTL serial for bluetooth etc
-#use rs232(baud=115200,parity=N,xmit=PIN_B6,rcv=PIN_B7,bits=8,ERRORS,stream=COM2)	// TTL serial for GPS
+#fuses NOWDT,NOPROTECT,SOSC_LOW,HSH,PLLEN,WDT,WDT128
+#use delay(clock=64000000,crystal=16000000,restart_wdt)
+#use rs232(baud=115200,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8,ERRORS,stream=COM1,restart_wdt)	// TTL serial for bluetooth etc
+#use rs232(baud=115200,parity=N,xmit=PIN_B6,rcv=PIN_B7,bits=8,ERRORS,stream=COM2,restart_wdt)	// TTL serial for GPS
 
 #define DISP_SS PIN_B5
 
@@ -20,6 +20,7 @@ void main(void)
 	setup_adc(ADC_CLOCK_DIV_8);
 	setup_adc_ports(sAN0);
 	set_adc_channel(0);
+	setup_wdt(WDT_ON);
 	setup_timer_1(T1_EXTERNAL | T1_ENABLE_SOSC);	// Set up the timekeeping timer
 	setup_timer_2(T2_DIV_BY_1, 0x28, 1);		// Set up SPI clock timer
 	setup_timer_3(T3_INTERNAL | T3_DIV_BY_8);	// Set up scheduler timer
@@ -44,6 +45,8 @@ void main(void)
 	}
 	memset(command_buffer, 0, sizeof(command_buffer));
 	memset(command, 0, sizeof(command));
+	
+	restart_wdt();
 	init_display();
 
 	fprintf(COM1, "HELLO!\r\n");	// Say hello!
@@ -57,6 +60,7 @@ void main(void)
 	set_timer3(-20000);			// Reset and set scheduler
 	while(TRUE)
 	{
+		restart_wdt();
 		if(t10ms0==1)
 		{
 			t10ms0=0;
