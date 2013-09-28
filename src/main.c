@@ -4,14 +4,15 @@
 #use delay(clock=64000000,crystal=16000000,restart_wdt)
 #use rs232(baud=115200,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8,ERRORS,stream=COM1,restart_wdt)	// TTL serial for bluetooth etc
 #use rs232(baud=115200,parity=N,xmit=PIN_B6,rcv=PIN_B7,bits=8,ERRORS,stream=COM2,restart_wdt)	// TTL serial for GPS
-
-// Beeps for centurion drinking game!
-#define DRINKING_GAME
-
-// SS pin for display
-#define DISP_SS PIN_B5
-
 #include "stdint.h"				// Standard int types
+
+#define DRINKING_GAME	// Beeps for centurion drinking game!
+#define DISP_SS PIN_B5	// SS pin for display
+
+#IFDEF DRINKING_GAME
+uint8_t shot_count=0;
+#ENDIF
+
 #include "wallclock.h"
 #include "scheduler.h"
 #include "display.h"

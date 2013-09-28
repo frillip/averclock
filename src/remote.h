@@ -163,6 +163,14 @@ void process_command(void)
 		output_bit(PIN_A1,led_status);
 		command_complete=TRUE;
 	}
+	#IFDEF DRINKING_GAME
+	else if(strncmp(command_buffer,"SHOTS",5))
+	{
+		if(command_buffer[6]) shot_count=(((uint8_t)command_buffer[5]-48)*10)+((uint8_t)command_buffer[6]-48);
+		fprintf(COM1,"%u\r\n", shot_count);
+		command_complete=TRUE;
+	}
+	#ENDIF
 	if(command_complete) fprintf(COM1,"OK\r\n");
 	memset(command_buffer, 0, sizeof(command_buffer));
 }
