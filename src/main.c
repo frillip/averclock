@@ -5,6 +5,10 @@
 #use rs232(baud=115200,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8,ERRORS,stream=COM1,restart_wdt)	// TTL serial for bluetooth etc
 #use rs232(baud=115200,parity=N,xmit=PIN_B6,rcv=PIN_B7,bits=8,ERRORS,stream=COM2,restart_wdt)	// TTL serial for GPS
 
+// Beeps for centurion drinking game!
+#define DRINKING_GAME
+
+// SS pin for display
 #define DISP_SS PIN_B5
 
 #include "stdint.h"				// Standard int types

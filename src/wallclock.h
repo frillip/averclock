@@ -13,6 +13,9 @@ void wallclock_inc_hour (void);
 void wallclock_dec_hour (void);
 void wallclock_alarm(void);
 
+#IFDEF DRINKING_GAME
+uint8_t shot_count=0;
+#ENDIF
 typedef struct {
 	uint8_t hours;
 	uint8_t minutes;
@@ -38,6 +41,16 @@ void wallclock_inc_sec (void)
 void wallclock_inc_min (void)
 {
 	time.minutes++;
+#IFDEF DRINKING_GAME
+	shot_count++;
+	if(shot_count<100)
+	{
+		alarm=TRUE;
+		manual_alarm=TRUE;
+		alarm_count=0;
+	}
+	if(shot_count==100) alarm=TRUE;
+#ENDIF
 	if (time.minutes == 60) {
 		wallclock_inc_hour();
 		time.minutes = 0;
