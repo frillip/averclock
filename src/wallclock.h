@@ -2,6 +2,9 @@
 #define EEPROM_HOURS	0x01
 #define EEPROM_MINUTES	0x02
 #define EEPROM_SECONDS	0x03
+#IFDEF DRINKING_GAME
+#define EEPROM_SHOTS	0x10
+#ENDIF
 #define ALARM_PIN		PIN_C2
 #define ALARM_DURATION	3
 
@@ -39,7 +42,7 @@ void wallclock_inc_min (void)
 {
 	time.minutes++;
 #IFDEF DRINKING_GAME
-	if(shot_count<100)
+	if((shot_count<100)&&(!shots_finished))
 	{
 		shot_count++;
 		alarm=TRUE;
@@ -47,11 +50,10 @@ void wallclock_inc_min (void)
 		alarm_count=0;
 		fprintf(COM1,"%u\r\n", shot_count);
 	}
-	if(shot_count==100)
+	if((shot_count==100)&&(!shots_finished))
 	{
-		shot_count++;
+		fprintf(COM1,"ALL DONE!\r\n");
 		alarm=TRUE;
-		fprintf(COM1,"%u!\r\nALL DONE!\r\n", shot_count);
 	}
 #ENDIF
 	if (time.minutes == 60) {

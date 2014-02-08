@@ -11,6 +11,7 @@
 
 #IFDEF DRINKING_GAME
 uint8_t shot_count=0;
+boolean shots_finished=FALSE;
 #ENDIF
 
 #include "wallclock.h"
@@ -40,11 +41,18 @@ void main(void)
 		time.hours=read_eeprom(EEPROM_HOURS);
 		time.minutes=read_eeprom(EEPROM_MINUTES);
 		time.seconds=read_eeprom(EEPROM_SECONDS);
+#IFDEF DRINKING_GAME
+		shot_count=read_eeprom(EEPROM_SHOTS);
+#ENDIF
 		write_eeprom(EEPROM_RESET,0x00);
 	}
 	else
 	{
+#IFDEF DRINKING_GAME
+		time.seconds=0;
+#ELSE
 		time.seconds=(((uint8_t)timestr[6]-48)*10)+((uint8_t)timestr[7]-46);
+#ENDIF
 		time.minutes=(((uint8_t)timestr[3]-48)*10)+((uint8_t)timestr[4]-48);
 		time.hours=(((uint8_t)timestr[0]-48)*10)+((uint8_t)timestr[1]-48);		// Parse timestr to time struct
 	}
@@ -94,7 +102,9 @@ void main(void)
 		if(t1s0==1)
 		{
 			t1s0=0;
+#IFNDEF DRINKING_GAME
 			toggle_colon();
+#ENDIF
 			update_display();
 			if(manual_alarm==FALSE) wallclock_alarm();
 		}

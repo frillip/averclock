@@ -97,6 +97,9 @@ void process_command(void)
 		write_eeprom(EEPROM_HOURS,time.hours);
 		write_eeprom(EEPROM_MINUTES,time.minutes);
 		write_eeprom(EEPROM_SECONDS,time.seconds);	// Write current time to EEPROM
+#IFDEF DRINKING_GAME
+		write_eeprom(EEPROM_SHOTS,shot_count);
+#ENDIF
 		delay_ms(10);
 		reset_cpu();
 	}

@@ -9,7 +9,8 @@ uint8_t t1s0=0;
 void timekeeping(void)
 {
 	set_timer1(-32768);	// Reset the timer, assuming 32.768Hz crystal
-	output_toggle(PIN_B4);
+	output_high(PIN_B4); // PPS output
+	output_low(PIN_B4);
 	wallclock_inc_sec();
 }
 

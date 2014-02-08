@@ -18,6 +18,16 @@ void update_display ()
 	output_low(DISP_SS);
 	#asm nop #endasm
 
+#IFDEF DRINKING_GAME
+	// Write curent shots to display
+	spi_write('x');
+	if(shot_count/100) spi_write(shot_count/100);
+	else spi_write('x');
+	if(((shot_count)/10)&&(shot_count<100)) spi_write((shot_count)/10);
+	else if((shot_count)/10) spi_write(((shot_count)/10)-10);
+	else spi_write('x');
+	spi_write(shot_count-((shot_count/10)*10));
+#ELSE
 	// hours (1-2 digit)
 	spi_write(time.hours/10);
 	spi_write(time.hours%10);
@@ -25,7 +35,7 @@ void update_display ()
 	// minutes
 	spi_write(time.minutes/10);
 	spi_write(time.minutes%10);
-
+#ENDIF
 	// deselect display
 	#asm nop #endasm
 	output_high(DISP_SS);
@@ -48,7 +58,11 @@ void init_display(void)
 	// dots
 	spi_write(0x77);
 	// colon
+#IFDEF DRINKING_GAME
+	spi_write(0x00);
+#ELSE
 	spi_write(0x10);
+#ENDIF
 	// max brightness
 	spi_write(0x7A);
 	spi_write(DISP_BRIGHTEST);
