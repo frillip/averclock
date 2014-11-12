@@ -6,7 +6,7 @@
 #use rs232(baud=115200,parity=N,xmit=PIN_B6,rcv=PIN_B7,bits=8,ERRORS,stream=COM2,restart_wdt)	// TTL serial for GPS
 #include "stdint.h"				// Standard int types
 
-#define DRINKING_GAME	// Beeps for centurion drinking game!
+//#define DRINKING_GAME	// Beeps for centurion drinking game!
 #define DISP_SS PIN_B5	// SS pin for display
 
 #IFDEF DRINKING_GAME
