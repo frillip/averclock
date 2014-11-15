@@ -141,7 +141,11 @@ void process_command(void)
 	}
 	else if(strncmp(command_buffer,"TIME",4))
 	{
-		if(command_buffer[9]) time.seconds=(((uint8_t)command_buffer[8]-48)*10)+((uint8_t)command_buffer[9]-48);
+		if(command_buffer[9])
+		{
+			time.seconds=(((uint8_t)command_buffer[8]-48)*10)+((uint8_t)command_buffer[9]-48);
+			set_timer1(-32768);
+		}
 		if(command_buffer[7])
 		{
 			time.minutes=(((uint8_t)command_buffer[6]-48)*10)+((uint8_t)command_buffer[7]-48);
